@@ -18,7 +18,7 @@ import datetime
 from celery import task
 from celery.schedules import crontab
 from celery.task import periodic_task
-from home_application.models import CerInfo
+from home_application.models import CerInfo, AlertSetting
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import smtplib
@@ -51,12 +51,12 @@ def get_smtp_client(conn_type, is_anonymous, _from, pwd, host, port):
 
 
 def send_mail(subject, content, to):
-    _from = "cwbk@canway.net"
+    _from = "160146764@qq.com"
     content_type = "HTML"
     conn_type = "NORMAL"
-    is_anonymous = True
-    pwd = "1qaz@WSX3edc"
-    host = "mail.canway.net"
+    is_anonymous = False
+    pwd = "hjxvdzkrqkfbbihi"
+    host = "smtp.qq.com"
     port = "25"
 
     msg = MIMEMultipart()
@@ -123,13 +123,18 @@ def build_html_mail_content(cer_list):
 
 
 def execute_task():
+    alert_setting = AlertSetting.objects.first()
+    mail_to = alert_setting.mailbox.split(";")
+    time_set = alert_setting.time_set
+
     date_now = datetime.datetime.now()
     date_now_str = str(date_now).split(".")[0]
-    date_delay = datetime.timedelta(days=330)
+    date_delay = datetime.timedelta(days=time_set)
     date_warn = str(date_now + date_delay).split(".")[0]
     warn_cer_list = CerInfo.objects.filter(is_deleted=False, expired_time__range=(date_now_str, date_warn))
-    content = build_html_mail_content(warn_cer_list)
-    send_mail(u"SSL证书过期提醒", content, "landon@canway.net")
+    if len(warn_cer_list) > 0 and len(mail_to) > 0:
+        content = build_html_mail_content(warn_cer_list)
+        send_mail(u"SSL证书过期提醒", content, mail_to)
 
 
 @periodic_task(run_every=crontab(minute='*/5', hour='*', day_of_week="*"))

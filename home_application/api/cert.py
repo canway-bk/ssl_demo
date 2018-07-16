@@ -128,9 +128,12 @@ def get_ca_count(request):
 
 def get_count_reports(request):
     try:
+        alert_setting = _get_alert_setting()
+        time_set = alert_setting.time_set
+
         date_now = datetime.datetime.now()
         date_now_str = str(date_now).split(".")[0]
-        date_delay = datetime.timedelta(days=330)
+        date_delay = datetime.timedelta(days=time_set)
         date_warn = str(date_now + date_delay).split(".")[0]
         expired_len = CerInfo.objects.filter(is_deleted=False, expired_time__lte=date_now_str).count()
         warn_len = CerInfo.objects.filter(is_deleted=False, expired_time__range=(date_now_str, date_warn)).count()
@@ -165,14 +168,18 @@ def get_count_reports(request):
         return render_json({"result": False, "message": u"系统出错，请联系开发人员"})
 
 
-def get_alert_setting(request):
+def _get_alert_setting():
     alert_setting = AlertSetting.objects.all().first()
     if not alert_setting:
         alert_setting = AlertSetting()
         alert_setting.mailbox = ""
         alert_setting.time_set = 300
         alert_setting.save()
+    return alert_setting
 
+
+def get_alert_setting(request):
+    alert_setting = _get_alert_setting()
     return render_json({"result": True, "data": {"time_set": alert_setting.time_set, "mailbox": alert_setting.mailbox}})
 
 
@@ -186,4 +193,3 @@ def update_alert_setting(request):
     alert_setting.time_set = data["time_set"]
     alert_setting.save()
     return render_json({"result": True})
-
