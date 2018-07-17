@@ -76,7 +76,7 @@ def send_mail(subject, content, to):
         logger.exception(error_msg)
         return False, error_msg
     except Exception as e:
-        return False, e.message
+        return False, str(e)
 
 
 def build_html_mail_content(cer_list):
