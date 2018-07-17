@@ -36,5 +36,5 @@ def contactus(request):
 
 
 def run_task(request):
-    get_time()
-    return render_json({"result": "ok"})
+    res, msg = get_time()
+    return render_json({"result": res, "msg": msg})

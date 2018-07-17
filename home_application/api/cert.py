@@ -8,7 +8,6 @@ import datetime
 
 def search_cer(request):
     try:
-        # filter_obj = eval(request.body)
         cer_list = CerInfo.objects.filter(
             is_deleted=False
         ).order_by("-created_time")
@@ -26,18 +25,6 @@ def search_cer(request):
                     "ex_date": cert.expired_time
                 }
             )
-
-        # for i in return_data:
-        #     date_now = datetime.datetime.now()
-        #     date_now_str = str(date_now).split(".")[0]
-        #     time_set = datetime.timedelta(days=i["created_by"]["time_set"])
-        #     date_warn = str(date_now + time_set).split(".")[0]
-        #     if date_now_str > i["expired_time"]:
-        #         i["warn_status"] = 2
-        #     elif date_now_str < i["expired_time"] < date_warn:
-        #         i["warn_status"] = 1
-        #     else:
-        #         i["warn_status"] = 0
 
         data = {
             "catalogues": {
@@ -126,7 +113,7 @@ def get_ca_count(request):
         return render_json({"result": False, "message": u"系统出错，请联系开发人员"})
 
 
-def get_count_reports(request):
+def get_status_count(request):
     try:
         alert_setting = _get_alert_setting()
         time_set = alert_setting.time_set
@@ -154,7 +141,7 @@ def get_count_reports(request):
                     "name": "已过期"
                 }, {
                     "value": warn_len,
-                    "name": "即将过期（30天）",
+                    "name": "即将过期（{0}天）".format(time_set),
                     "color": "#f7a35c"
                 }, {
                     "value": normal_len,
@@ -193,3 +180,28 @@ def update_alert_setting(request):
     alert_setting.time_set = data["time_set"]
     alert_setting.save()
     return render_json({"result": True})
+
+
+def get_alert_history(request):
+    return_data = []
+    return_data.append(
+        {
+            "index": 1,
+            "app_name": "bk",
+            "when_alert": "2017",
+            "receiver": "landon@canway.net",
+            "ex_date": "2018"
+        }
+    )
+
+    data = {
+        "catalogues": {
+            "index": "序号",
+            "app_name": "业务系统",
+            "when_alert": "告警时间",
+            "receiver": "告警接收人",
+            "ex_date": "过期时间"
+        },
+        "items": return_data
+    }
+    return render_json(data)

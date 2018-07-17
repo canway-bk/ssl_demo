@@ -75,6 +75,8 @@ def send_mail(subject, content, to):
         error_msg = u'send email to {0} failed'.format(",".join(to))
         logger.exception(error_msg)
         return False, error_msg
+    except Exception as e:
+        return False, e.message
 
 
 def build_html_mail_content(cer_list):
@@ -134,7 +136,9 @@ def execute_task():
     warn_cer_list = CerInfo.objects.filter(is_deleted=False, expired_time__range=(date_now_str, date_warn))
     if len(warn_cer_list) > 0 and len(mail_to) > 0:
         content = build_html_mail_content(warn_cer_list)
-        send_mail(u"SSL证书过期提醒", content, mail_to)
+        return send_mail(u"SSL证书过期提醒", content, mail_to)
+
+    return True, ""
 
 
 @periodic_task(run_every=crontab(minute='*/5', hour='*', day_of_week="*"))
@@ -145,6 +149,6 @@ def get_time():
     run_every=crontab(minute='*/5', hour='*', day_of_week="*")：每 5 分钟执行一次任务
     periodic_task：程序运行时自动触发周期任务
     """
-    execute_task()
+    return execute_task()
     now = datetime.datetime.now()
     logger.error(u"celery 周期任务调用成功，当前时间：{}".format(now))

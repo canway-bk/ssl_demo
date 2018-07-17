@@ -24,8 +24,9 @@ urlpatterns = patterns(
     (r'^search_all_cer$', 'search_all_cer'),
     (r'^add_cer$', 'add_cer'),
     (r'^delete_cer$', 'delete_cer'),
-    (r'^get_count_reports$', 'get_count_reports'),
+    (r'^get_status_count$', 'get_status_count'),
     (r'^get_ca_count$', 'get_ca_count'),
     (r'^get_alert_setting$', 'get_alert_setting'),
     (r'^update_alert_setting$', 'update_alert_setting'),
+    (r'^get_alert_history$', 'get_alert_history'),
 )
