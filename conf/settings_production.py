@@ -19,7 +19,7 @@ from settings import APP_ID
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 默认用mysql
-        'NAME': "ssl_monitor",                        # 数据库名 (默认与APP_ID相同)
+        'NAME': "ssl_monitor_test",                        # 数据库名 (默认与APP_ID相同)
         'USER': 'root',                            # 你的数据库user
         'PASSWORD': 'h,IYZo3uPT',                        # 你的数据库password
         'HOST': '192.168.1.48',                   		   # 数据库HOST
