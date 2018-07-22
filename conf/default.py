@@ -30,8 +30,8 @@ from django.conf.global_settings import *  # noqa
 # 应用基本信息配置 (请按照说明修改)
 # ==============================================================================
 # 在蓝鲸智云开发者中心 -> 点击应用ID -> 基本信息 中获取 APP_ID 和 APP_TOKEN 的值
-APP_ID = 'monitor-test'
-APP_TOKEN = 'dfb162b9-f0a1-4bd7-b482-9c2c4d4a88b4'
+APP_ID = 'ssl-monitor'
+APP_TOKEN = '7efbae9a-4b6e-4525-a463-256d1d142d14'
 # 蓝鲸智云开发者中心的域名，形如：http://paas.bking.com
 BK_PAAS_HOST = 'http://paasce-poc.o.qcloud.com'
 

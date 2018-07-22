@@ -1,50 +1,42 @@
 <%inherit file="/base.html"/>
 
 <%block name="content">
-<style type="text/css">
-    #footer {
-        position: relative;
-        bottom: -40px;
-    }
-</style>
-<div class="page-contactus">
-    <!-- 内容 start-->
-    <!--comtactus-detail -->
-    <div class="container">
-        <div class="tc" id="contactus">
-            <div class="weixin-img-arrow">
-                <div>
-                    <img class="weixin-img" src="${STATIC_URL}img/weixin_icom.png">
+<div class="king-page-box">
+        <div class="king-container clearfix">
+            <div class="king-block king-block-bordered king-block-themed m5">
+                <div class="king-block-header king-info">
+                    <ul class="king-block-options">
+                        <li>
+                            <!-- <button type="button"><i class="fa fa-cog"></i></button> -->
+                        </li>
+                    </ul>
+                    <h3 class="king-block-title">告警设置参数</h3>
                 </div>
-                <p>关注我们</p>
-            </div>
-            <div class="comtactus-way-arrow tc mt50">
-                <div class="dbi border-right tc" style="width: 280px; padding-left: 60px">
-                    <div class="img-arrow">
-                        <img class="" src="${STATIC_URL}img/icom_01.png">
-                    </div>
-                    <p class="mt20">深圳市南山区科兴学园C2</p>
-                </div>
-                <div class="dbi border-right tc" style="width: 180px">
-                    <div class="img-arrow">
-                        <img src="${STATIC_URL}img/icom_02.png">
-                    </div>
-                    <p class="mt20">企业QQ：800802001</p>
-                </div>
-                <div class="dbi tc" style="width: 280px">
-                    <div class="img-arrow">
-                        <img src="${STATIC_URL}img/icom_03.png">
-                    </div>
-                    <p class="mt20">邮箱：contactus_bk@tencent.com</p>
+                <div class="king-block-content p5">
+                    <form class="form-horizontal">
+                        <div class="form-group clearfix ">
+                            <label class="col-sm-3 control-label bk-lh30 pt0">提前告警天数：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control bk-valign-top" id="" placeholder=""> </div>
+                        </div>
+                        <div class="form-group clearfix ">
+                            <label class="col-sm-3 control-label bk-lh30 pt0">告警通知邮箱：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control bk-valign-top" id="" placeholder="多个邮箱以分号隔开"> </div>
+                        </div>
+                    </form>
                 </div>
             </div>
+            <form class="form-horizontal">
+                <div class="form-group clearfix">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <button type="button" class="king-btn mr10  king-success">提交</button>
+                        <button type="button" class="king-btn king-default ">取消</button>
+                    </div>
+                </div>
+            </form>
         </div>
-
     </div>
-    <!-- 内容 start-->
-</div>
-
-
 </%block>
 <%block name='footerline'>
 <script>
@@ -55,7 +47,7 @@
         var ipt_mailbox = $($(".form-control.bk-valign-top")[1]);
 
         if ($(".weixin-img").length == 0) {
-            $.get("https://magicbox.bkclouds.cc/static_api/v3/components/form/demo.json", function (res) {
+            $.get(site_url + "get_alert_setting", function (res) {
                 ipt_time_set.val(res.data.time_set);
                 ipt_mailbox.val(res.data.mailbox);
             })
